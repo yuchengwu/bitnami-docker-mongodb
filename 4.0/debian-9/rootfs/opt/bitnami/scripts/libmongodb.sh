@@ -483,6 +483,10 @@ mongodb_set_storage_conf() {
         if [[ -n "$MONGODB_ENABLE_DIRECTORY_PER_DB" ]]; then
             mongodb_config_apply_regex "directoryPerDB:.*" "directoryPerDB: $({ is_boolean_yes "$MONGODB_ENABLE_DIRECTORY_PER_DB" && echo 'true'; } || echo 'false')" "$conf_file_path"
         fi
+        if [[ -z "$MONGODB_WIREDTIGER_ENGINECONFIG_CACHESIZEGB" ]]; then
+            MONGODB_WIREDTIGER_ENGINECONFIG_CACHESIZEGB=$(grep MemTotal /proc/meminfo | awk '{print ($2/1024/1024-1)/2 }')
+        fi 
+        mongodb_config_apply_regex "cacheSizeGB:.*" "cacheSizeGB: $MONGODB_WIREDTIGER_ENGINECONFIG_CACHESIZEGB" "$conf_file_path"
     else
         debug "$conf_file_name mounted. Skipping setting storage settings"
     fi

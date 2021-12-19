@@ -8,6 +8,9 @@ storage:
   journal:
     enabled: {{MONGODB_DEFAULT_ENABLE_JOURNAL}}
   directoryPerDB: {{MONGODB_DEFAULT_ENABLE_DIRECTORY_PER_DB}}
+  wiredTiger:
+    engineConfig:
+      cacheSizeGB: {{MONGODB_WIREDTIGER_ENGINECONFIG_CACHESIZEGB}}
 
 # where to write logging data.
 systemLog:
